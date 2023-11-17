@@ -3,7 +3,7 @@ package main.enemy;
 public enum EnemyTemplates {
 
     ZAKU(0, new Enemy("杂鱼", 100, 10, 20)),
-    CULTIST(2, new Enemy("腐化之心", 999, 1, 200)),
+    CULTIST(2, new Enemy("腐化之心", 999, 1, 50)),
 
 
 

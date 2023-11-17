@@ -139,18 +139,20 @@ public class Role {
     /**
      * 刷新祝福
      */
-    public void refreshSkillCardBag() throws CloneNotSupportedException {
+    public void refreshSkillCardBag() {
         SkillCardTemplates[] cardTemplates = SkillCardTemplates.values();
         // 普通祝福
         for (int i = 0; i < MAX_SKILL_CARD_NUM - 1; ++i) {
-            int index = new Random().nextInt(cardTemplates.length);
-            skillCards[i] = cardTemplates[index].getCard().clone();
+            if (skillCards[i] == null || skillCards[i].getUseableCnt() == 0) {
+                int index = new Random().nextInt(cardTemplates.length);
+                skillCards[i] = cardTemplates[index].getCard().clone();
+            }
         }
         // 专属祝福
         ExclusiveSkillCardTemplates[] exclusiveCardTemplates = ExclusiveSkillCardTemplates.values();
         for (ExclusiveSkillCardTemplates cardTemplate : exclusiveCardTemplates) {
             if (name.equals(cardTemplate.getBelong())) {
-                skillCards[MAX_SKILL_CARD_NUM - 1] = cardTemplate.getCard();
+                skillCards[MAX_SKILL_CARD_NUM - 1] = cardTemplate.getCard().clone();
             }
         }
     }

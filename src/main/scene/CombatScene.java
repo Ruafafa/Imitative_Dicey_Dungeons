@@ -140,8 +140,6 @@ public class CombatScene extends AbstractGameScene{
             combatEnemy.renderInfo();
             System.out.println(AsciiColor.BLUE + combatPlayer.toString());
             Thread.sleep(1000);
-            // 整理骰子背包，使得碎片空间左对齐
-            clearUpBag(combatDiceBag);
             // 检查骰子是否用完
             if (combatDiceBag[0] == null) break;
         }
@@ -278,6 +276,8 @@ public class CombatScene extends AbstractGameScene{
         combatDiceBag[diceIndex] = null;
         combatPlayer.setUsedDiceCnt(combatPlayer.getUsedDiceCnt() + 1);
         usedDiceCnt++;
+        // 整理骰子背包，使得碎片空间左对齐
+        clearUpBag(combatDiceBag);
     }
 
     /**
