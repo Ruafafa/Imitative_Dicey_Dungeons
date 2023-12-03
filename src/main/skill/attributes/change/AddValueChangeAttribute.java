@@ -2,10 +2,12 @@ package main.skill.attributes.change;
 
 import main.dice.Dice;
 import main.skill.attributes.api.DiceChangeAttribute;
+import main.skill.attributes.api.DiceRetentable;
 
-public class AddValueChangeAttribute implements DiceChangeAttribute {
+public class AddValueChangeAttribute implements DiceChangeAttribute, DiceRetentable {
 
     int add;
+    final int MAX_DOT_VALUE = 6;
 
     public AddValueChangeAttribute(int add) {
         this.add = add;
@@ -14,8 +16,8 @@ public class AddValueChangeAttribute implements DiceChangeAttribute {
     @Override
     public void doChange(Dice[] dice, int changeIndex) {
         Integer newValue = dice[changeIndex].getValue() + add;
-        if (newValue <= 6) {
-            dice[changeIndex] = Dice.valueOf("_" + newValue);
+        if (newValue <= MAX_DOT_VALUE) {
+            dice[changeIndex] = Dice.values[newValue];
         }
     }
 }

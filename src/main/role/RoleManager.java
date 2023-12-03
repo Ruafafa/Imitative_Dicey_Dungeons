@@ -1,7 +1,8 @@
 package main.role;
 
 /**
- * 角色需要扩展、使用 Manager管理
+ * 角色使用 Manager管理
+ * 使用 Manager管理 Role 类，用于处理游戏中的角色。该类管理可用角色和当前选择的战斗角色。
  */
 public class RoleManager {
     /**
@@ -27,9 +28,12 @@ public class RoleManager {
      * 展示角色列表
      */
     public void showRoleList() {
+        // banner 展示
+        System.out.println("——————————————————");
+        System.out.println("【YOU】* 请选择角色:");
         // 选择角色列表展示
         for (int i = 0; i < availableRoles.length; ++i) {
-            System.out.printf("[%d] %s\n", i, availableRoles[i]);
+            System.out.printf("[%d] %s%n \n", i, availableRoles[i]);
         }
     }
 
@@ -49,10 +53,6 @@ public class RoleManager {
 
     public Role getCombatRole() {
         return combatRole;
-    }
-
-    public void setCombatRole(Role combatRole) {
-        this.combatRole = combatRole;
     }
 
 }

@@ -3,34 +3,22 @@ package main.scene;
 import main.common.AsciiColor;
 import main.common.LineStyle;
 import main.scene.api.GameScene;
-import main.utils.PrintStyleUtil;
+import main.utils.PrintStyleUtils;
 
 import java.util.Scanner;
 
 /**
- * 抽象引擎模板
+ * 这是 AbstractGameScene 类。
+ * 它实现了 GameScene 接口，并用作所有游戏场景的基类。
+ * 该类包括用户最新输入 （userInput） 的属性。
+ * 它还包括用于获取用户输入、显示横幅以及输入和检查整数的方法。
  */
 public abstract class AbstractGameScene implements GameScene {
 
     /**
      * 存储用户最近输入
      */
-    public String userInput = null;
-
-    /**
-     * 预先显示
-     */
-    public abstract void preprocess() throws InterruptedException, CloneNotSupportedException;
-
-    /**
-     * 更新主页跳转
-     */
-    public abstract void updateLogic() throws InterruptedException;
-
-    /**
-     * 根据数据更新主页画面
-     */
-    public abstract void renderUI() throws InterruptedException;
+    public String userInput;
 
     /**
      * 获取用户 键盘输入
@@ -38,7 +26,6 @@ public abstract class AbstractGameScene implements GameScene {
     public String getUserInput() {
         return new Scanner(System.in).nextLine();
     }
-
 
 
     /**
@@ -60,7 +47,7 @@ public abstract class AbstractGameScene implements GameScene {
         String row = lineBuilder.toString();
         // 打印 Banner
         System.out.println(row);
-        PrintStyleUtil.alignCenter(msg, bannerMinWidth);
+        PrintStyleUtils.alignCenter(msg, bannerMinWidth);
         System.out.println(row);
     }
 

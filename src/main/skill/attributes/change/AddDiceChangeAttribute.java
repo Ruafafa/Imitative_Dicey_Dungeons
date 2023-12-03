@@ -20,12 +20,11 @@ public class AddDiceChangeAttribute implements DiceChangeAttribute {
     @Override
     public void doChange(Dice[] changedDices, int changeIndex) {
         int cnt = addNum;
-        for (int i = 0; i < changedDices.length; i++) {
-            Dice[] dices = Dice.values();
-            if (cnt == 0) break;
+        for (int i = 0; i < changedDices.length && cnt > 0; i++) {
+            Dice[] dices = Dice.values;
             // 补充空骰子
             if (changedDices[i] == null) {
-                changedDices[i] = dices[new Random().nextInt(maxValue - minValue + 1)  + minValue - 1];
+                changedDices[i] = dices[new Random().nextInt(maxValue - minValue + 1)  + minValue];
                 cnt--;
             }
         }

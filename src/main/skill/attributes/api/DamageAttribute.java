@@ -6,3 +6,4 @@ public interface DamageAttribute {
 
     void doAttack(Integer num, Enemy enemy);
 }
+

@@ -7,16 +7,20 @@ import main.dice.Dice;
 import main.enemy.Enemy;
 import main.role.Role;
 import main.skill.SkillCard;
-import main.skill.attributes.api.ConditionAttribute;
-import main.skill.attributes.api.DamageAttribute;
-import main.skill.attributes.api.DiceChangeAttribute;
-import main.skill.attributes.api.HealthAttribute;
+import main.skill.attributes.api.*;
 import main.skill.attributes.condition.ProbabilisticTriggerConditionAttribute;
 import main.skill.attributes.damage.FixedPlusDamageAttribute;
-import main.utils.PrintStyleUtil;
+import main.utils.PrintStyleUtils;
 
 /**
  * <h1>开启一场战斗场景</h1>
+ * 这是 CombatScene 类。
+ * 它扩展了 AbstractGameScene 类，并表示游戏中的战斗场景。
+ * 该类包括当前战斗玩家 （combatPlayer）、当前战斗敌人 （combatEnemy）、
+ * 当前战斗玩家的骰子袋 （combatDiceBag）、圆形计数器 （roundCnt）和骰子使用计数器 （usedDiceCnt） 的属性。
+ * 它还包括预处理场景、更新游戏逻辑、渲染用户界面、渲染战斗、执行玩家回合、使用技能卡、检查生命值属性、
+ * 检查骰子变化属性、检查伤害属性、检查条件属性、检查技能使用后的状态、消耗技能卡和骰子、清理袋子和执行敌人回合的方法。
+ * @see AbstractGameScene
  * @apiNote  独立，不作为方法提供者
  */
 public class CombatScene extends AbstractGameScene{
@@ -55,7 +59,7 @@ public class CombatScene extends AbstractGameScene{
     }
 
     @Override
-    public void preprocess() throws InterruptedException, CloneNotSupportedException {
+    public void preprocess() throws InterruptedException {
         // 回合开始玩家重置骰子、技能
         combatPlayer.refreshSkillCardBag();
         combatPlayer.refreshDiceBag();
@@ -86,7 +90,7 @@ public class CombatScene extends AbstractGameScene{
     }
 
     @Override
-    public void renderUI() {
+    public void renderUi() {
         showBanner("回合结束", LineStyle.H2);
     }
 
@@ -167,7 +171,7 @@ public class CombatScene extends AbstractGameScene{
         HealthAttribute health = usedSkillCard.getHealthAttribute();
         // 骰子可用性校验
         if (dice == null) {
-            PrintStyleUtil.colourRed("【YOU】x 请选择正确的骰子序号");
+            PrintStyleUtils.colourRed("【YOU】x 请选择正确的骰子序号");
             Thread.sleep(1000);
             return false;
         }
@@ -238,9 +242,9 @@ public class CombatScene extends AbstractGameScene{
                 // 概率触发
                 if (condition instanceof ProbabilisticTriggerConditionAttribute) {
                     consumeSkillCardAndDice(usedSkillCard, diceIndex);
-                    PrintStyleUtil.colourRed("【YOU】x 触发失败(|w|)");
+                    PrintStyleUtils.colourRed("【YOU】x 触发失败(|w|)");
                 } else {
-                    PrintStyleUtil.colourRed("【YOU】x 请注意限制！");
+                    PrintStyleUtils.colourRed("【YOU】x 请注意限制！");
                 }
                 Thread.sleep(1000);
                 return true;
@@ -268,12 +272,16 @@ public class CombatScene extends AbstractGameScene{
      */
     private void consumeSkillCardAndDice(SkillCard usedSkillCard, int diceIndex) {
         // 使用完毕，技能卡使用次数 - 1
-        Integer useableCnt = usedSkillCard.getUseableCnt();
+        Integer useableCnt = usedSkillCard.getAvailableCounter();
         if (useableCnt != null) {
-            usedSkillCard.setUseableCnt(useableCnt - 1);
+            usedSkillCard.setAvailableCounter(useableCnt - 1);
         }
-        // 使用完毕，清除该骰子，玩家骰子使用数 + 1
-        combatDiceBag[diceIndex] = null;
+
+        // 使用完，清除该骰子，玩家骰子使用数 - 1
+        boolean saved = usedSkillCard.getDiceChangeAttribute() instanceof DiceRetentable;
+        if (!saved) {
+            combatDiceBag[diceIndex] = null;
+        }
         combatPlayer.setUsedDiceCnt(combatPlayer.getUsedDiceCnt() + 1);
         usedDiceCnt++;
         // 整理骰子背包，使得碎片空间左对齐

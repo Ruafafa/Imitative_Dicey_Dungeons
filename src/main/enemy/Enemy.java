@@ -45,18 +45,11 @@ public class Enemy {
     }
 
     /**
-     * 获取属性
-     */
-    public void showAttribute() {
-        System.out.println(name + " HP:" + hp);
-    }
-
-    /**
      * 渲染信息
      */
     public void renderInfo() throws InterruptedException {
         System.out.println(LineStyle.LONG_DIVIDE_LINE);
-        showAttribute();
+        System.out.println(name + " HP:" + hp);
         Thread.sleep(1000);
         System.out.println(LineStyle.LONG_DIVIDE_LINE);
     }

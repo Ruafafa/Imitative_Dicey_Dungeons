@@ -11,6 +11,12 @@ import main.skill.attributes.damage.FixedPlusDamageAttribute;
 import main.skill.attributes.damage.MultiplierDamageAttribute;
 import main.skill.attributes.health.PercentageHealthAttribute;
 
+
+/**
+*这个枚举代表游戏中不同类型的技能卡。
+*每个技能卡都有一个类别和一个与之相关的SkillCard对象。
+* SkillCard对象是使用Builder模式构建的。
+*/
 public enum SkillCardTemplates {
 
     /**
@@ -22,8 +28,8 @@ public enum SkillCardTemplates {
             .addUseableCnt(1)
             .build()),
 
-    DAMAGE_ANGRY("damage", new SkillCard.Builder("愤怒", "造成 2 伤害，本场战斗每使用一个骰子，该技能伤害 + 2", "无限制")
-            .addDamageAttribute(new FixedPlusDamageAttribute(2, 2))
+    DAMAGE_ANGRY("damage", new SkillCard.Builder("愤怒", "造成 2 伤害，本场战斗每使用一个骰子，该技能伤害 + 3", "无限制")
+            .addDamageAttribute(new FixedPlusDamageAttribute(2, 3))
             .addUseableCnt(3)
             .build()),
 
@@ -58,11 +64,13 @@ public enum SkillCardTemplates {
     CHANGE_SUPER_LOTTO("change", new SkillCard.Builder("骰子大乐透", "获得随机点数的骰子，小概率失去 9 HP", "无限制")
             .addDiceChangeAttribute(new AddDiceChangeAttribute(1, 1, 6))
             .addConditionAttribute((Integer value, Role role) -> {
-                        if (new ProbabilisticTriggerConditionAttribute(33).isValid(value, role))
+                        if (new ProbabilisticTriggerConditionAttribute(33).isValid(value, role)) {
                             new ConsumeHpConditionAttribute(9).isValid(value, role);
+                        }
                         return true;
                     }
             )
+            .addDamageAttribute((num, enemy) -> System.out.println("【YOU】x 你失去了 9 HP"))
             .addUseableCnt(3)
             .build()),
 

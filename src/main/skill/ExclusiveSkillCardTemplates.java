@@ -7,7 +7,12 @@ import main.skill.attributes.damage.MultiplierDamageAttribute;
 import main.skill.attributes.health.PercentageHealthAttribute;
 
 /**
- * 角色专属级技能
+ * <h1>角色专属级技能</h1>
+ * 这个枚举代表游戏中不同角色的专属技能卡。
+ * 每张技能卡都有一个它所属的角色和一个与之相关的技能卡对象。
+ * SkillCard对象是使用Builder模式构建的。
+ * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum API</a>
+ * @see <a href="https://www.runoob.com/cprogramming/c-enum.html">Enum 菜鸟教程</a>
  */
 public enum ExclusiveSkillCardTemplates {
 

@@ -4,8 +4,13 @@ import main.skill.attributes.api.ConditionAttribute;
 import main.skill.attributes.api.DamageAttribute;
 import main.skill.attributes.api.DiceChangeAttribute;
 import main.skill.attributes.api.HealthAttribute;
-import main.utils.PrintStyleUtil;
+import main.utils.PrintStyleUtils;
 
+/**
+* 这个类代表游戏中的技能卡。
+* 每个技能卡都有名称、描述、条件和各种属性。
+* SkillCard对象是使用Builder模式构建的。
+*/
 public class SkillCard {
     /**
      * 技能名
@@ -39,17 +44,16 @@ public class SkillCard {
     /**
      * 可用计数器
      */
-    protected Integer useableCnt;
+    protected Integer availableCounter;
 
     /**
-     * 卡牌本身不会改变，该类的情况允许使用浅拷贝
+     * 卡牌本身不会改变，该类的情况允许使用-浅拷贝 深拷贝
      * @apiNote 对于 useableCnt, 拷贝后互不影响,因为重新设置引用
      * @return
      */
-    @Override
-    public SkillCard clone() {
+    public SkillCard getCopy() {
         return new SkillCard(this.name, this.description, this.condition, this.conditionAttribute, this.damageAttribute,
-                this.diceChangeAttribute, this.healthAttribute, this.useableCnt);
+                this.diceChangeAttribute, this.healthAttribute, this.availableCounter);
     }
 
     /**
@@ -57,25 +61,25 @@ public class SkillCard {
      */
     public void renderInfo() {
         System.out.println("[------------------]");
-        PrintStyleUtil.alignCenter(name, 18);
-        PrintStyleUtil.wrappedString("[祝福简述] " + description, 12);
-        PrintStyleUtil.alignCenter("[点数限制] " + condition,18);
-        if (useableCnt != null) {
-            PrintStyleUtil.alignCenter("[剩余可用]" + useableCnt,18);
+        PrintStyleUtils.alignCenter(name, 18);
+        PrintStyleUtils.wrappedString("[祝福简述] " + description, 12);
+        PrintStyleUtils.alignCenter("[点数限制] " + condition,18);
+        if (availableCounter != null) {
+            PrintStyleUtils.alignCenter("[剩余可用]" + availableCounter,18);
         }
         System.out.println("[------------------]");
     }
 
-    public void setUseableCnt(Integer useableCnt) {
-        this.useableCnt = useableCnt;
+    public void setAvailableCounter(Integer availableCounter) {
+        this.availableCounter = availableCounter;
     }
 
     /**
      * 本回合使用次数
      * @return
      */
-    public Integer getUseableCnt() {
-        return useableCnt;
+    public Integer getAvailableCounter() {
+        return availableCounter;
     }
 
     public ConditionAttribute getConditionAttribute() {
@@ -95,7 +99,7 @@ public class SkillCard {
     }
 
 
-    private SkillCard(String name, String description, String condition, ConditionAttribute conditionAttribute, DamageAttribute damageAttribute, DiceChangeAttribute diceChangeAttribute, HealthAttribute healthAttribute, Integer useableCnt) {
+    private SkillCard(String name, String description, String condition, ConditionAttribute conditionAttribute, DamageAttribute damageAttribute, DiceChangeAttribute diceChangeAttribute, HealthAttribute healthAttribute, Integer availableCounter) {
         this.name = name;
         this.description = description;
         this.condition = condition;
@@ -103,7 +107,7 @@ public class SkillCard {
         this.damageAttribute = damageAttribute;
         this.diceChangeAttribute = diceChangeAttribute;
         this.healthAttribute = healthAttribute;
-        this.useableCnt = useableCnt;
+        this.availableCounter = availableCounter;
     }
 
     private SkillCard(Builder builder) {
@@ -114,7 +118,7 @@ public class SkillCard {
         this.diceChangeAttribute = builder.diceChangeAttribute;
         this.healthAttribute = builder.healthAttribute;
         this.conditionAttribute = builder.conditionAttribute;
-        this.useableCnt = builder.usedCnt;
+        this.availableCounter = builder.usedCnt;
     }
 
     /**

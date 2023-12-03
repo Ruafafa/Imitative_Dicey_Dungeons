@@ -3,10 +3,13 @@ package main.scene;
 import main.DiceyDungeonsGame;
 import main.common.AsciiColor;
 import main.common.LineStyle;
-import main.utils.PrintStyleUtil;
+import main.utils.PrintStyleUtils;
 
 /**
- * 主菜单场景
+ * 这是 MainMenuScene 类。
+ * 它扩展了 AbstractGameScene 类，并表示游戏的主菜单场景。
+ * 该类包括游戏是否正在进行的属性 （isGaming）
+ * 它还包括用于预处理、呈现用户界面和更新游戏逻辑的方法。
  */
 public class MainMenuScene extends AbstractGameScene {
 
@@ -14,11 +17,6 @@ public class MainMenuScene extends AbstractGameScene {
      * 是否有游戏启动
      */
     Boolean isGaming = false;
-
-    /**
-     * 选择角色场景
-     */
-    AbstractGameScene chooseRoleScene = new ChooseRoleScene();
 
     @Override
     public void preprocess() {
@@ -31,7 +29,7 @@ public class MainMenuScene extends AbstractGameScene {
     }
 
     @Override
-    public void renderUI() {
+    public void renderUi() {
 
     }
 
@@ -44,11 +42,11 @@ public class MainMenuScene extends AbstractGameScene {
             // 游戏启动
             isGaming = true;
             // 游戏启动-> 显示角色选择画面
-            DiceyDungeonsGame.setNextGameScene(chooseRoleScene);
+            DiceyDungeonsGame.setNextGameScene(new ChooseRoleScene());
         } else if ("/exit".equals(userInput)) {
             System.exit(0);
         } else {
-            PrintStyleUtil.colour("【YOU】x 输入错误！\n\n", AsciiColor.RED);
+            PrintStyleUtils.colour("【YOU】x 无效输入！\n\n", AsciiColor.RED);
         }
     }
 
